@@ -1,22 +1,22 @@
 <template>
     <div>
-        <div style="color: #ff1493; font-size: 20px; font-weight: bold">
+        <div class="checkbox-pink">
             <input type="checkbox" id="pink-modal-sign" value="pink" v-model="checkedModalNames">
             <label for="pink-modal-sign">pink</label>
         </div>
-        <div style="color: #87cefa; font-size: 20px; font-weight: bold">
+        <div class="checkbox-blue">
             <input type="checkbox" id="blue-modal-sign" value="blue" v-model="checkedModalNames">
             <label for="blue-modal-sign">bleu</label>
         </div>
-        <div style="color: #32cd32; font-size: 20px; font-weight: bold">
+        <div class="checkbox-green">
             <input type="checkbox" id="green-modal-sign" value="green" v-model="checkedModalNames">
             <label for="green-modal-sign">green</label>
         </div>
         <button @click="show">show modal</button>
     </div>
-    <div v-if="modal" id="overlay">
+    <div v-if="visibleModal" class="overlay">
 
-        <div v-if="modalPink" id="pink-modal" class="modal-container" @click.self="closePinkModal">
+        <div v-if="visibleModalPink" id="pink-modal" class="pink-modal-body" @click.self="closePinkModal">
             <div class="modal-pink-body">
                 <p>Hello world</p>
                 <div class="modal-footer">
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div v-if="modalBlue" id="blue-modal" class="modal-container" @click.self="closeBlueModal">
+        <div v-if="visibleModalBlue" id="blue-modal" class="blue-modal-body" @click.self="closeBlueModal">
             <div class="modal-blue-body">
                 <p>Hello world</p>
                 <div class="modal-footer">
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div v-if="modalGreen" id="green-modal" class="modal-container" @click.self="closeGreenModal">
+        <div v-if="visibleModalGreen" id="green-modal" class="green-modal-body" @click.self="closeGreenModal">
             <div class="modal-green-body">
                 <p>Hello world</p>
                 <div class="modal-footer">
@@ -46,68 +46,92 @@
     </div>
 </template>
 <script lang="ts">
-    import {defineComponent} from 'vue'
+    import { ref, reactive, defineComponent } from 'vue'
 
     export default defineComponent({
         name: 'App',
         components: {},
-        data() {
-            return {
-                modal: false,
-                modalPink: false,
-                modalBlue: false,
-                modalGreen: false,
-                checkedModalNames: [],
-            }
-        },
+        data() {},
         // composition API
         setup() {
+            console.log('This is Vue3')
+            let visibleModal = ref(false);
+            let visibleModalPink = ref(false);
+            let visibleModalBlue = ref(false);
+            let visibleModalGreen = ref(false);
+            let checkedModalNames = ref([]);
+
+            return {
+                visibleModal,
+                visibleModalPink,
+                visibleModalBlue,
+                visibleModalGreen,
+                checkedModalNames,
+            }
         },
         methods: {
             show(): void {
-                this.modal = true;
+                this.visibleModal = true;
                 for (let modalName of this.checkedModalNames) {
                     switch (modalName) {
                         case 'pink':
-                            this.modalPink = true;
+                            this.visibleModalPink = true;
                             break;
                         case 'green':
-                            this.modalGreen = true;
+                            this.visibleModalGreen = true;
                             break;
                         case 'blue':
-                            this.modalBlue = true;
+                            this.visibleModalBlue = true;
                             break;
                     }
                 }
             },
             close(): void {
-                this.modal = false;
+                this.visibleModal = false;
             },
             closePinkModal(): void {
-                this.modalPink = false;
-                if (!this.modalBlue && !this.modalGreen) {
+                this.visibleModalPink = false;
+                if (!this.visibleModalBlue && !this.visibleModalGreen) {
                     this.initializeIndexPage();
                 }
             },
             closeBlueModal(): void {
-                this.modalBlue = false;
-                if (!this.modalGreen) {
+                this.visibleModalBlue = false;
+                if (!this.visibleModalGreen) {
                     this.initializeIndexPage();
                 }
             },
             closeGreenModal(): void {
-                this.modalGreen = false;
+                this.visibleModalGreen = false;
                 this.initializeIndexPage();
             },
-            initializeIndexPage(): void{
-                this.modal = false;
+            initializeIndexPage(): void {
+                this.visibleModal = false;
                 this.checkedModalNames = [];
             },
         },
     })
 </script>
 <style>
-    #overlay {
+    .checkbox-pink {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff1493;
+    }
+
+    .checkbox-blue {
+        font-size: 20px;
+        font-weight: bold;
+        color: #87cefa;
+    }
+
+    .checkbox-green {
+        font-size: 20px;
+        font-weight: bold;
+        color: #32cd32;
+    }
+
+    .overlay {
         z-index: 1;
         position: fixed;
         top: 0;
@@ -120,7 +144,7 @@
         justify-content: center;
     }
 
-    #pink-modal {
+    .pink-modal-body {
         z-index: 30;
         position: fixed;
         top: 0;
@@ -132,7 +156,7 @@
         justify-content: center;
     }
 
-    #blue-modal {
+    .blue-modal-body {
         z-index: 20;
         position: fixed;
         top: 0;
@@ -144,7 +168,7 @@
         justify-content: center;
     }
 
-    #green-modal {
+    .green-modal-body {
         z-index: 10;
         position: fixed;
         top: 0;
