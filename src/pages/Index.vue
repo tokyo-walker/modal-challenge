@@ -1,4 +1,7 @@
 <template>
+    <template>
+        <Modal/>>
+    </template>
     <div>
         <div class="checkbox-pink">
             <input type="checkbox" id="pink-modal-sign" value="pink" v-model="checkedModalNames">
@@ -47,6 +50,13 @@
 </template>
 <script lang="ts">
     import { ref, reactive, defineComponent } from 'vue'
+    import Modal from '~/components/Modal.vue'
+
+    const { modalComponent } = Modal
+
+    // ref, reactiveの違い。ref = obj持てる、、
+    //　reactive -> objectの中のフィールド書き換えたいときにいい。オブジェクト書き換えらんないいい。配列なら一生配列。
+    // ref -> まるっと書き換えられる。
 
     export default defineComponent({
         name: 'App',
