@@ -1,22 +1,5 @@
 <template>
-    <template>
-        <Modal/>>
-    </template>
-    <div>
-        <div class="checkbox-pink">
-            <input type="checkbox" id="pink-modal-sign" value="pink" v-model="checkedModalNames">
-            <label for="pink-modal-sign">pink</label>
-        </div>
-        <div class="checkbox-blue">
-            <input type="checkbox" id="blue-modal-sign" value="blue" v-model="checkedModalNames">
-            <label for="blue-modal-sign">bleu</label>
-        </div>
-        <div class="checkbox-green">
-            <input type="checkbox" id="green-modal-sign" value="green" v-model="checkedModalNames">
-            <label for="green-modal-sign">green</label>
-        </div>
-        <button @click="show">show modal</button>
-    </div>
+    <div><Modal /></div>
     <div v-if="visibleModal" class="overlay">
 
         <div v-if="visibleModalPink" id="pink-modal" class="pink-modal-body" @click.self="closePinkModal">
@@ -49,10 +32,8 @@
     </div>
 </template>
 <script lang="ts">
-    import { ref, reactive, defineComponent } from 'vue'
+    import {ref, reactive, defineComponent} from 'vue'
     import Modal from '~/components/Modal.vue'
-
-    const { modalComponent } = Modal
 
     // ref, reactiveの違い。ref = obj持てる、、
     //　reactive -> objectの中のフィールド書き換えたいときにいい。オブジェクト書き換えらんないいい。配列なら一生配列。
@@ -60,8 +41,12 @@
 
     export default defineComponent({
         name: 'App',
-        components: {},
-        data() {},
+        components: {
+            Modal
+        },
+        data() {
+            Modal
+        },
         // composition API
         setup() {
             console.log('This is Vue3')
@@ -122,24 +107,8 @@
         },
     })
 </script>
-<style>
-    .checkbox-pink {
-        font-size: 20px;
-        font-weight: bold;
-        color: #ff1493;
-    }
-
-    .checkbox-blue {
-        font-size: 20px;
-        font-weight: bold;
-        color: #87cefa;
-    }
-
-    .checkbox-green {
-        font-size: 20px;
-        font-weight: bold;
-        color: #32cd32;
-    }
+<!--styleがバッティングしないようにここでだけ使えるようにscoped-->
+<style scoped>
 
     .overlay {
         z-index: 1;
